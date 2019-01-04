@@ -13,8 +13,28 @@ from sync import SyncCallTaskApi
 import generate
 
 @pytest.fixture(scope="module")
-def state():
-    return {'account': None}
+def state(request):
+    __state = {'account': None}
+    def resource_teardown():
+
+        sugar_session = sugar_connect()
+
+        current = sugar_session.get_entry(Task.module, __state.get('task_1').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
+        current = sugar_session.get_entry(Task.module, __state.get('task_2').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
+        current = sugar_session.get_entry(Task.module, __state.get('task_3').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
+        
+    request.addfinalizer(resource_teardown)
+
+    return __state
 
 
 @pytest.fixture(scope="module")
