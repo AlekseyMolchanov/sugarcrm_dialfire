@@ -9,7 +9,7 @@ from pprint import pprint
 from functools import partial
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 class SyncCallTaskApi(object):
