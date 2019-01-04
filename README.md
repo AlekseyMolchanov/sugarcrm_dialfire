@@ -1,5 +1,8 @@
 # Export SugarCRM tasks to DialFire.com
 
+[![CircleCI](https://circleci.com/gh/AlekseyMolchanov/sugarcrm_dialfire.svg?style=svg)](https://circleci.com/gh/AlekseyMolchanov/sugarcrm_dialfire)
+[![codecov](https://codecov.io/gh/AlekseyMolchanov/sugarcrm_dialfire/branch/master/graph/badge.svg)](https://codecov.io/gh/AlekseyMolchanov/sugarcrm_dialfire)
+
 
 # Install
 
