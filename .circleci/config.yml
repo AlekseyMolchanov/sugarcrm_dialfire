@@ -1,0 +1,56 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: python:3.6.7-jessie
+
+    working_directory: ~/sugarcrm_dialfire
+
+    steps:
+      - checkout
+      
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            apt-get update 
+            aapt-get update && apt-get install -y build-essential
+            apt-get install libpython-dev -y
+            apt-get install python-pip -y
+            
+            pip install virtualenv 
+            virtualenv venv
+            . venv/bin/activate
+            pip install --upgrade --force-reinstall --no-cache-dir -r requirements.txt
+            
+            pip install codecov pytest pytest-cov
+              
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+        
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pytest -vs 
+            
+      -  run:
+          name: upload coverage report
+          command: |
+            . venv/bin/activate
+            pytest --cov=./
+            codecov || echo "Error in uploading coverage reports to codecov.io."      
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+          
