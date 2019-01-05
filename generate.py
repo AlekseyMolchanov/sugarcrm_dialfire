@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from faker_e164.providers import E164Provider
 from faker import Faker
 fake = Faker()
+fake.add_provider(E164Provider)
 
 from random import randint, choice
 from datetime import datetime, timedelta
@@ -59,11 +61,7 @@ def generate_City():
 
 def generate_Phone():
     while 1:
-        phone = "+%s%s%s" % (
-            fake.random_int(min=1, max=999),
-            str(fake.random_int(min=1, max=999)).zfill(3), 
-            str(fake.random_int(min=1234567, max=9876543)), 
-        )
+        phone = fake.e164(region_code="AU", valid=True, possible=True)
         if check.check_PhoneNumber(phone):
             yield phone
 
