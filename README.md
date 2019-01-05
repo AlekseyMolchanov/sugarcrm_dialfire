@@ -6,7 +6,7 @@
 
 # Install
 
-    Define Environment Variables
+Define Environment Variables
 
     DIALFIRE_CAMPAIGN_ID
     DIALFIRE_CAMPAIGN_TOKEN
@@ -15,10 +15,14 @@
     SUGAR_CRM_URL
     SUGAR_CRM_USERNAME
     SUGAR_CRM_PASSWORD
+
+Install requirements
+    
+    pip install -r requirements.txt
     	
 # Usage
 
-    Just run 
+Just run 
 
     ./sync.py
 
