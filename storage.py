@@ -44,7 +44,6 @@ class Stor(object):
         '''
         os.makedirs(self.FOLDER)
         data = self.init_data()
-        print(data)
         self.__store(data)
 
     def __walk(self):
