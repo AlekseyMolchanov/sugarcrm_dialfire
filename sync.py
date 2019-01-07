@@ -36,7 +36,9 @@ class SyncCallTaskApi(object):
                               'primary_address_city',
                               'primary_address_postalcode',
                               'email1',
-                              'account_id'
+                              'account_id',
+                              'telefon_direkt_c',
+                              'telefon_zentrale_firma_c'
                               ]}
         tasks = self.sugar_session.get_entry_list(query, links=links)
         for task in tasks:
