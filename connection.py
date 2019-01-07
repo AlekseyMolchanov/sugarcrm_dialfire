@@ -16,9 +16,16 @@ def connect(proxies=None):
         password = os.environ['SUGAR_CRM_PASSWORD']
         logger.debug('url:{} username:{} pass:{}'.format(url, username, password))
         
+        auth=Session.local_auth
+
+        if os.environ.get('CIRCLECI'):
+            auth=Session.remote_auth
+
         session = Session(url, username, password,
                           proxies=proxies,
-                          auth=Session.local_auth)
+                          auth=auth)
+        
+
     except KeyError as exception:
         logger.error(exception)
     except Exception as exception:
