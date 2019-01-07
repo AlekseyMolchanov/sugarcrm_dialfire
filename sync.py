@@ -115,8 +115,8 @@ def main():
     sync = SyncCallTaskApi(diall_session, sugar_session)
     tasks = sync.get_tasks()
 
-    if not task:
-        logger.warning('No new task with call')
+    if not tasks:
+        logger.warning('No tasks with "call" in name')
 
     for task in tasks:
         if not sync.already_exported(task):
