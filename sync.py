@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+import argparse
 from sugarcrm import Task
 from connection import connect as sugar_connect
 from dialfire import connect as dial_connect
@@ -72,8 +72,21 @@ class SyncCallTaskApi(object):
 
 def main():
 
-    sugar_session = sugar_connect()
-    diall_session = dial_connect()
+    parser = argparse.ArgumentParser(prog='sync.py')
+    parser.add_argument('--http-proxy', help='proxy HTTP ex: http://10.10.1.10:3128', type=str) 
+    parser.add_argument('--https-proxy', help='proxy HTTPs ex: http://10.10.1.10:1080', type=str) 
+
+    options = vars(parser.parse_args())
+    
+    proxies = {}
+    if 'http_proxy' in options:
+        proxies['http'] = options['http_proxy']
+
+    if 'https_proxy' in options:
+        proxies['https'] = options['https_proxy']
+
+    sugar_session = sugar_connect(proxies=(proxies or None))
+    diall_session = dial_connect(proxies=(proxies or None))
 
     if not sugar_session:
         print ("\n######## Warning ########")

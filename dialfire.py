@@ -18,19 +18,21 @@ class Dialfire():
 
     URL = "https://api.dialfire.com/api/{}"
 
-    def __init__(self, campaign_id=None, campaign_token=None, tenant_id=None, tenant_token=None, task_name=None):
+    def __init__(self, campaign_id=None, campaign_token=None, tenant_id=None, tenant_token=None, task_name=None, proxies=None):
         self.tenant_id = tenant_id
         self.tenant_token = tenant_token
         self.campaign_id = campaign_id
         self.campaign_token = campaign_token
         self.task_name = task_name
 
+        self.proxies = proxies
+
     def __post_request(self, parts, data):
         headers = {
             'Authorization': 'Bearer {}'.format(self.campaign_token)
         }
         url = self.URL.format('/'.join(parts))
-        req = requests.post(url, data=data, headers=headers)
+        req = requests.post(url, data=data, headers=headers, proxies=self.proxies)
         return req.json()
 
     def get_contacts_index(self):
@@ -55,7 +57,7 @@ class Dialfire():
         return self.__post_request(url_parts, data=dumps(data)).get('data', {}).get('$id')
 
 
-def connect():
+def connect(proxies=None):
     session = None
     try:
         task_name = os.environ.get('DIALFIRE_TASK_NAME')
@@ -70,7 +72,8 @@ def connect():
                             tenant_token=tenant_token,
                             campaign_id=campaign_id,
                             campaign_token=campaign_token,
-                            task_name=task_name)
+                            task_name=task_name,
+                            proxies=proxies)
         else:
             raise UserWarning(
                 'Environ must have Dialfire TENANT or CAMPAIGN credentials')

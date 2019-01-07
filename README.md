@@ -26,6 +26,10 @@ Just run
 
     ./sync.py
 
+    or run and read help
+    
+    ./sync.py --help
+
 # Install as periodic task
 
     add to cron (crontab -e)
