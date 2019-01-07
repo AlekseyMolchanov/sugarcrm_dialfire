@@ -12,7 +12,7 @@ def connect(proxies=None):
         url  = os.environ['SUGAR_CRM_URL']
         username = os.environ['SUGAR_CRM_USERNAME']
         password = os.environ['SUGAR_CRM_PASSWORD']
-        session = Session(url, username, password, proxies=proxies, auth=Session.local_auth)
+        session = Session(url, username, password, proxies=proxies, verify=False, auth=Session.local_auth)
     except KeyError as exception:
         pass
     return session
