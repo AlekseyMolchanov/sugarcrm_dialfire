@@ -124,6 +124,7 @@ def main():
             contact_id = sync.diall_session.create_contact(data)
             sync.stor.append(contact_id, task.id)
             sync.stor.append(contact_id, data['$ref'])
+            logger.info('sync {}'.format(data['$ref']))
         else:
             logger.info('already sync {}'.format(data['$ref']))
 
