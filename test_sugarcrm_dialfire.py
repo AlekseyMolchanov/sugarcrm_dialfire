@@ -40,7 +40,11 @@ def state(request):
 @pytest.fixture(scope="module")
 def sessions(request):
     sugar_session = sugar_connect()
+    assert sugar_session
+    
     diall_session = dial_connect()
+    assert diall_session
+
     return diall_session, sugar_session
 
 
@@ -117,8 +121,11 @@ def test_task_eq_data(sessions, state):
     tasks = sync.get_tasks()
     assert tasks
     for task in tasks:
-        assert not sync.already_exported(task)
+        
         data_to_export = sync.prepare_export_data(task)
+        
+        assert not sync.already_exported(data_to_export['$ref'])
+        
         
         contact_id = sync.diall_session.create_contact(data_to_export)
         sync.stor.append(contact_id, task.id)
