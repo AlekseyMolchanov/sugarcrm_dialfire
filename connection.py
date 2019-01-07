@@ -21,4 +21,6 @@ def connect(proxies=None):
                           auth=Session.local_auth)
     except KeyError as exception:
         logger.error(exception)
+    except Exception as exception:
+        logger.critical(exception)
     return session
