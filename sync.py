@@ -9,7 +9,7 @@ from pprint import pprint
 from functools import partial
 
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class SyncCallTaskApi(object):
@@ -85,7 +85,7 @@ def main():
     if 'https_proxy' in options:
         proxies['https'] = options['https_proxy']
 
-    sugar_session = sugar_connect(proxies=None)
+    sugar_session = sugar_connect()
     diall_session = dial_connect(proxies=(proxies or None))
 
     if not sugar_session:
