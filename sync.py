@@ -23,9 +23,8 @@ class SyncCallTaskApi(object):
     def get_tasks(self):
         __tasks_with_contact = []
 
-        query = Task(name="%Call%",
-                     assigne_user_id='1491fcc2-c6f3-11e8-9407-0ea10e74340a')
-                     
+        query = Task(name="%Call%")
+
         links = {'Contacts': ['id',
                               'title',
                               'salutation',
@@ -131,7 +130,7 @@ def main():
 
     for task in tasks:
         data = sync.prepare_export_data(task)
-        if not sync.already_exported(data['$ref']):
+        if not sync.already_exported(data['$ref']) and task.assigne_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
             contact_id = sync.diall_session.create_contact(data)
             sync.stor.append(contact_id, task.id)
             sync.stor.append(contact_id, data['$ref'])
