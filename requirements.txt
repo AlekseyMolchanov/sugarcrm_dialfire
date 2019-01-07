@@ -1,4 +1,4 @@
-pytest
+pytest==4.0.2
 requests
 faker
 faker-e164
