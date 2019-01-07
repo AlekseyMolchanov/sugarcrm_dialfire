@@ -132,13 +132,14 @@ def main():
 
     for task in tasks:
         data = sync.prepare_export_data(task)
-        if not sync.already_exported(data['$ref']) and task.assigned_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
-            contact_id = sync.diall_session.create_contact(data)
-            sync.stor.append(contact_id, task.id)
-            sync.stor.append(contact_id, data['$ref'])
-            logger.info('sync {}'.format(data['$ref']))
-        else:
-            logger.info('already sync {}'.format(data['$ref']))
+        if task.assigned_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
+            if not sync.already_exported(data['$ref']):
+                contact_id = sync.diall_session.create_contact(data)
+                sync.stor.append(contact_id, task.id)
+                sync.stor.append(contact_id, data['$ref'])
+                logger.info('sync {}'.format(data['$ref']))
+            else:
+                logger.info('already sync {}'.format(data['$ref']))
 
     return 0
 
