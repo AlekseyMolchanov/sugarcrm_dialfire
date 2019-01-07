@@ -13,6 +13,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+
 class SyncCallTaskApi(object):
     def __init__(self, diall_session, sugar_session):
         self.diall_session = diall_session
@@ -41,19 +42,22 @@ class SyncCallTaskApi(object):
                 __tasks_with_contact.append(task)
         return __tasks_with_contact
 
-
     def already_exported(self, _id):
         return self.stor.has(_id)
 
     def prepare_export_data(self, task):
-        
+
         contact = task.contacts[0]
 
-        account = self.sugar_session.get_entry(Account.module, contact.account_id)
+        account = self.sugar_session.get_entry(
+            Account.module, contact.account_id)
 
         export_data = {
             'NameFirst': account.name if account else '',
-            '$phone': (contact.phone_work or contact.phone_other or ""),
+            '$phone': (contact.phone_work or
+                       contact.phone_other or 
+                       contact.telefon_zentrale_firma_c or 
+                       contact.telefon_direkt_c or ""),
             'first_name': contact.first_name,
             'last_name': contact.last_name,
             'Gender': contact.salutation,
@@ -79,9 +83,12 @@ class SyncCallTaskApi(object):
 def main():
 
     parser = argparse.ArgumentParser(prog='sync.py')
-    parser.add_argument('--http-proxy', help='proxy HTTP example: http://10.10.1.10:3128', type=str) 
-    parser.add_argument('--https-proxy', help='proxy HTTPs example: http://10.10.1.10:1080', type=str) 
-    parser.add_argument('--no-proxy', help='disable proxy for host example: bestcrm.bechtle.intra', type=str) 
+    parser.add_argument(
+        '--http-proxy', help='proxy HTTP example: http://10.10.1.10:3128', type=str)
+    parser.add_argument(
+        '--https-proxy', help='proxy HTTPs example: http://10.10.1.10:1080', type=str)
+    parser.add_argument(
+        '--no-proxy', help='disable proxy for host example: bestcrm.bechtle.intra', type=str)
 
     options = vars(parser.parse_args())
 
@@ -129,6 +136,7 @@ def main():
             logger.info('already sync {}'.format(data['$ref']))
 
     return 0
+
 
 if __name__ == "__main__":
     exit(main())
