@@ -38,8 +38,7 @@ class SyncCallTaskApi(object):
                               'email1',
                               'account_id',
                               'telefon_direkt_c',
-                              'telefon_zentrale_firma_c',
-                              'assigne_user_id'
+                              'telefon_zentrale_firma_c'
                               ]}
         tasks = self.sugar_session.get_entry_list(query, links=links)
         for task in tasks:
@@ -133,7 +132,7 @@ def main():
 
     for task in tasks:
         data = sync.prepare_export_data(task)
-        if not sync.already_exported(data['$ref']) and task.assigne_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
+        if not sync.already_exported(data['$ref']) and task.assigned_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
             contact_id = sync.diall_session.create_contact(data)
             sync.stor.append(contact_id, task.id)
             sync.stor.append(contact_id, data['$ref'])
