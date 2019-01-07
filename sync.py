@@ -10,7 +10,7 @@ from pprint import pprint
 from functools import partial
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 
 class SyncCallTaskApi(object):
@@ -74,19 +74,21 @@ class SyncCallTaskApi(object):
 def main():
 
     parser = argparse.ArgumentParser(prog='sync.py')
-    parser.add_argument('--http-proxy', help='proxy HTTP ex: http://10.10.1.10:3128', type=str) 
-    parser.add_argument('--https-proxy', help='proxy HTTPs ex: http://10.10.1.10:1080', type=str) 
+    parser.add_argument('--http-proxy', help='proxy HTTP example: http://10.10.1.10:3128', type=str) 
+    parser.add_argument('--https-proxy', help='proxy HTTPs example: http://10.10.1.10:1080', type=str) 
+    parser.add_argument('--no-proxy', help='disable proxy for host example: bestcrm.bechtle.intra', type=str) 
 
     options = vars(parser.parse_args())
 
-    os.environ['NO_PROXY'] = 'bestcrm.bechtle.intra'
-    
     proxies = {}
     if 'http_proxy' in options:
         proxies['http'] = options['http_proxy']
 
     if 'https_proxy' in options:
         proxies['https'] = options['https_proxy']
+
+    if 'no_proxy' in options:
+        os.environ['NO_PROXY'] = options['no_proxy']
 
     sugar_session = sugar_connect()
     diall_session = dial_connect(proxies=(proxies or None))
