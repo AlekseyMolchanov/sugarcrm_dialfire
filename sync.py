@@ -42,8 +42,8 @@ class SyncCallTaskApi(object):
         return __tasks_with_contact
 
 
-    def already_exported(self, task):
-        return self.stor.has(task.id)
+    def already_exported(self, _id):
+        return self.stor.has(_id)
 
     def prepare_export_data(self, task):
         
@@ -119,13 +119,13 @@ def main():
         logger.warning('No tasks with "call" in name')
 
     for task in tasks:
-        if not sync.already_exported(task):
-            data = sync.prepare_export_data(task)
+        data = sync.prepare_export_data(task)
+        if not sync.already_exported(data['$ref']):
             contact_id = sync.diall_session.create_contact(data)
             sync.stor.append(contact_id, task.id)
             sync.stor.append(contact_id, data['$ref'])
         else:
-            logger.info('already sync {}'.format(task.id))
+            logger.info('already sync {}'.format(data['$ref']))
 
     return 0
 
