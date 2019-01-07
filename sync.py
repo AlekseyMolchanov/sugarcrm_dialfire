@@ -85,7 +85,7 @@ def main():
     if 'https_proxy' in options:
         proxies['https'] = options['https_proxy']
 
-    sugar_session = sugar_connect(proxies=(proxies or None))
+    sugar_session = sugar_connect(proxies=None)
     diall_session = dial_connect(proxies=(proxies or None))
 
     if not sugar_session:
