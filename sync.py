@@ -2,7 +2,7 @@
 # encoding: utf-8
 import os
 import argparse
-from sugarcrm import Task
+from sugarcrm import Task, Account
 from connection import connect as sugar_connect
 from dialfire import connect as dial_connect
 from storage import Stor
@@ -32,7 +32,8 @@ class SyncCallTaskApi(object):
                               'primary_address_street',
                               'primary_address_city',
                               'primary_address_postalcode',
-                              'email1'
+                              'email1',
+                              'account_id'
                               ]}
         tasks = self.sugar_session.get_entry_list(query, links=links)
         for task in tasks:
@@ -45,9 +46,13 @@ class SyncCallTaskApi(object):
         return self.stor.has(task.id)
 
     def prepare_export_data(self, task):
+        
         contact = task.contacts[0]
+
+        account = self.sugar_session.get_entry(Account.module, contact.account_id)
+
         export_data = {
-            'NameFirst': task.name,
+            'NameFirst': account.name if account else '',
             '$phone': (contact.phone_work or contact.phone_other or ""),
             'first_name': contact.first_name,
             'last_name': contact.last_name,
@@ -57,7 +62,7 @@ class SyncCallTaskApi(object):
             'city': contact.primary_address_city,
             'postcode': contact.primary_address_postalcode,
             'Mail': contact.email1,
-            '$ref': task.id
+            '$ref': contact.id
         }
         return export_data
 
@@ -112,7 +117,7 @@ def main():
         if not sync.already_exported(task):
             data = sync.prepare_export_data(task)
             contact_id = sync.diall_session.create_contact(data)
-            sync.stor.append(contact_id, task.id)
+            sync.stor.append(contact_id, data['$ref'])
 
     return 0
 
