@@ -2,4 +2,4 @@ pytest
 requests
 faker
 faker-e164
-git+https://github.com/AlekseyMolchanov/sugarcrm
+git+https://github.com/RidaAyed/sugarcrm
