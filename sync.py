@@ -92,7 +92,7 @@ def main():
     if 'https_proxy' in options:
         proxies['https'] = options['https_proxy']
 
-    if 'no_proxy' in options:
+    if 'no_proxy' in options and options['no_proxy']:
         os.environ['NO_PROXY'] = options['no_proxy']
 
     sugar_session = sugar_connect()
