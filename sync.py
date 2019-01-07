@@ -11,7 +11,7 @@ from functools import partial
 
 import logging
 logging.basicConfig(level=logging.INFO)
-
+logger = logging.getLogger()
 
 class SyncCallTaskApi(object):
     def __init__(self, diall_session, sugar_session):
@@ -113,11 +113,19 @@ def main():
         exit(1)
 
     sync = SyncCallTaskApi(diall_session, sugar_session)
-    for task in sync.get_tasks():
+    tasks = sync.get_tasks()
+
+    if not task:
+        logger.warning('No new task with call')
+
+    for task in tasks:
         if not sync.already_exported(task):
             data = sync.prepare_export_data(task)
             contact_id = sync.diall_session.create_contact(data)
+            sync.stor.append(contact_id, task.id)
             sync.stor.append(contact_id, data['$ref'])
+        else:
+            logger.info('already sync {}'.format(task.id))
 
     return 0
 
