@@ -56,8 +56,9 @@ class SyncCallTaskApi(object):
             'NameFirst': account.name if account else '',
             '$phone': (contact.phone_work or
                        contact.phone_other or 
+                       contact.telefon_direkt_c or
                        contact.telefon_zentrale_firma_c or 
-                       contact.telefon_direkt_c or ""),
+                       ""),
             'first_name': contact.first_name,
             'last_name': contact.last_name,
             'Gender': contact.salutation,
