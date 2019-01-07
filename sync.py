@@ -22,7 +22,10 @@ class SyncCallTaskApi(object):
 
     def get_tasks(self):
         __tasks_with_contact = []
-        query = Task(name="%Call%")
+
+        query = Task(name="%Call%",
+                     assigne_user_id='1491fcc2-c6f3-11e8-9407-0ea10e74340a')
+                     
         links = {'Contacts': ['id',
                               'title',
                               'salutation',
@@ -55,9 +58,9 @@ class SyncCallTaskApi(object):
         export_data = {
             'NameFirst': account.name if account else '',
             '$phone': (contact.phone_work or
-                       contact.phone_other or 
+                       contact.phone_other or
                        contact.telefon_direkt_c or
-                       contact.telefon_zentrale_firma_c or 
+                       contact.telefon_zentrale_firma_c or
                        ""),
             'first_name': contact.first_name,
             'last_name': contact.last_name,
