@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import os
 import argparse
 from sugarcrm import Task
 from connection import connect as sugar_connect
@@ -77,6 +78,8 @@ def main():
     parser.add_argument('--https-proxy', help='proxy HTTPs ex: http://10.10.1.10:1080', type=str) 
 
     options = vars(parser.parse_args())
+
+    os.environ['NO_PROXY'] = 'bestcrm.bechtle.intra'
     
     proxies = {}
     if 'http_proxy' in options:
