@@ -31,7 +31,18 @@ def state(request):
         current.deleted = True
         current = sugar_session.set_entry(current)
 
-        
+        current = sugar_session.get_entry(Contact.module, __state.get('contact_1').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
+        current = sugar_session.get_entry(Contact.module, __state.get('contact_2').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
+        current = sugar_session.get_entry(Contact.module, __state.get('contact_3').id)
+        current.deleted = True
+        current = sugar_session.set_entry(current)
+
     request.addfinalizer(resource_teardown)
 
     return __state
@@ -94,15 +105,23 @@ def test_call_in_task_name(sessions, state):
 
     obj = Contact(**fake_contact_data())
     contact = sugar_session.set_entry(obj)
-    state['contact'] = contact
+    state['contact_1'] = contact
     
     obj = Task(**fake_task_data('Some task without keyword in name', contact.id))
     task = sugar_session.set_entry(obj)
     state['task_1'] = task
 
+    obj = Contact(**fake_contact_data())
+    contact = sugar_session.set_entry(obj)
+    state['contact_2'] = contact
+
     obj = Task(**fake_task_data('Some task with Call keyword in name', contact.id))
     task = sugar_session.set_entry(obj)
     state['task_2'] = task
+
+    obj = Contact(**fake_contact_data())
+    contact = sugar_session.set_entry(obj)
+    state['contact_3'] = contact
 
     obj = Task(**fake_task_data('Some task with CALL keyword in name', contact.id))
     task = sugar_session.set_entry(obj)
