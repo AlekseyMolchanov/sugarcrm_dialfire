@@ -41,9 +41,13 @@ class SyncCallTaskApi(object):
                               'telefon_zentrale_firma_c'
                               ]}
         tasks = self.sugar_session.get_entry_list(query, links=links)
+        
         for task in tasks:
             if hasattr(task, 'contacts'):
                 __tasks_with_contact.append(task)
+            else:
+                logger.warn('Found task without contacts "{}" [{}]'.format(task.title, task.id))
+
         return __tasks_with_contact
 
     def already_exported(self, _id):
@@ -124,15 +128,23 @@ def main():
         print ("###########################\n")
         exit(1)
 
+    assigned_user_id = os.environ.get('SUGAR_CRM_ASSIGNED_USER_ID')
+
     sync = SyncCallTaskApi(diall_session, sugar_session)
     tasks = sync.get_tasks()
 
     if not tasks:
         logger.warning('No tasks with "call" in name')
+    else:
+        logger.info('found {} tasks'.format(len(tasks)))
+
+    if not assigned_user_id:
+        logger.warning('SUGAR_CRM_ASSIGNED_USER_ID is not set')
 
     for task in tasks:
-        data = sync.prepare_export_data(task)
-        if task.assigned_user_id == '1491fcc2-c6f3-11e8-9407-0ea10e74340a':
+        if not assigned_user_id or assigned_user_id == task.assigned_user_id:
+
+            data = sync.prepare_export_data(task)
             if not sync.already_exported(data['$ref']):
                 contact_id = sync.diall_session.create_contact(data)
                 sync.stor.append(contact_id, task.id)
@@ -140,6 +152,9 @@ def main():
                 logger.info('sync {}'.format(data['$ref']))
             else:
                 logger.info('already sync {}'.format(data['$ref']))
+
+        elif assigned_user_id:
+            logger.warn('Found task with deferent assigned_user_id "{}" [{}]'.format(task.title, task.id))
 
     return 0
 

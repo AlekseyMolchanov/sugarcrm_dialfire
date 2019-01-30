@@ -16,6 +16,10 @@ Define Environment Variables
     SUGAR_CRM_USERNAME
     SUGAR_CRM_PASSWORD
 
+    Optional:
+
+    SUGAR_CRM_ASSIGNED_USER_ID
+
 Install requirements
     
     pip install -r requirements.txt
