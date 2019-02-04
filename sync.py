@@ -46,7 +46,7 @@ class SyncCallTaskApi(object):
             if hasattr(task, 'contacts'):
                 __tasks_with_contact.append(task)
             else:
-                logger.warn('Found task without contacts "{}" [{}]'.format(task.title, task.id))
+                logger.warn('Found task without contacts "{}" [{}]'.format(task.name, task.id))
 
         return __tasks_with_contact
 
@@ -154,7 +154,7 @@ def main():
                 logger.info('already sync {}'.format(data['$ref']))
 
         elif assigned_user_id:
-            logger.warn('Found task with deferent assigned_user_id "{}" [{}]'.format(task.title, task.id))
+            logger.warn('Found task with deferent assigned_user_id "{}" [{}]'.format(task.name, task.id))
 
     return 0
 
