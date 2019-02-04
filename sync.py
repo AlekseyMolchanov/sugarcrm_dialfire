@@ -140,6 +140,9 @@ def main():
 
     if not assigned_user_id:
         logger.warning('SUGAR_CRM_ASSIGNED_USER_ID is not set')
+    else:
+        logger.info('Used SUGAR_CRM_ASSIGNED_USER_ID: {}'.format(assigned_user_id))
+
 
     for task in tasks:
         if not assigned_user_id or assigned_user_id == task.assigned_user_id:
