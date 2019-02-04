@@ -10,7 +10,7 @@ from pprint import pprint
 from functools import partial
 
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 
 
@@ -41,6 +41,8 @@ class SyncCallTaskApi(object):
                               'telefon_zentrale_firma_c'
                               ]}
         tasks = self.sugar_session.get_entry_list(query, links=links)
+        
+        logger.info('found {} tasks with "Call" in name'.format(len(tasks)))
         
         for task in tasks:
             if hasattr(task, 'contacts'):
