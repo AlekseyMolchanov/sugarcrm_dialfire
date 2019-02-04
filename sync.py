@@ -138,7 +138,7 @@ def main():
     if not tasks:
         logger.warning('No tasks with "call" in name')
     else:
-        logger.info('found {} tasks'.format(len(tasks)))
+        logger.info('found {} tasks with contact'.format(len(tasks)))
 
     if not assigned_user_id:
         logger.warning('SUGAR_CRM_ASSIGNED_USER_ID is not set')
@@ -159,7 +159,7 @@ def main():
                 logger.info('already sync {}'.format(data['$ref']))
 
         elif assigned_user_id:
-            logger.warn('Found task with deferent assigned_user_id "{}" [{}]'.format(task.name, task.id))
+            logger.warn('Found task "{}" [{}] with deferent assigned_user_id {}'.format(task.name, task.id, task.assigned_user_id))
 
     return 0
 
